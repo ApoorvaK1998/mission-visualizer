@@ -116,7 +116,10 @@ export default function MapView(): JSX.Element {
       .map(([k, v]) => `<strong>${k}:</strong> ${v ?? "N/A"}`)
       .join("<br/>");
     
-    layer.bindPopup(propsHtml);
+    layer.bindPopup(propsHtml, {
+      closeButton: false,
+      className: 'custom-popup'
+    });
     
     layer.on({
       mouseover: (e: L.LeafletMouseEvent) => {
@@ -155,19 +158,19 @@ export default function MapView(): JSX.Element {
     };
   };
 
-  const poleStyle: L.CircleMarkerOptions = { color: "#6A1B9A", fillColor: "#6A1B9A", fillOpacity: 0.7, weight: 1, radius: 5 };
-  const fenceStyle: L.PathOptions = { color: "#546E7A", weight: 2, dashArray: "8, 6", fillOpacity: 0 };
-  const obstacleStyle: L.PathOptions = { color: "#C62828", fillColor: "#EF5350", fillOpacity: 0.35, weight: 1.5 };
-  const panelStyle: L.PathOptions = { color: "#5D4037", fillColor: "#8D6E63", fillOpacity: 0.4, weight: 1.5 };
-  const stationStyle: L.CircleMarkerOptions = { color: "#EF6C00", fillColor: "#FFB74D", fillOpacity: 0.7, weight: 1, radius: 7 };
-  const missionNodeStyle: L.CircleMarkerOptions = { color: "#1565C0", fillColor: "#64B5F6", fillOpacity: 0.8, weight: 1, radius: 5 };
-  const missionEdgeStyle: L.PathOptions = { color: "#2E7D32", weight: 2.5 };
+  const poleStyle: L.CircleMarkerOptions = { color: "#8b5cf6", fillColor: "#8b5cf6", fillOpacity: 0.85, weight: 1, radius: 5 };
+  const fenceStyle: L.PathOptions = { color: "#64748b", weight: 2.5, dashArray: "10, 8", fillOpacity: 0 };
+  const obstacleStyle: L.PathOptions = { color: "#ef4444", fillColor: "#ef4444", fillOpacity: 0.4, weight: 1.5 };
+  const panelStyle: L.PathOptions = { color: "#eab308", fillColor: "#eab308", fillOpacity: 0.45, weight: 1.5 };
+  const stationStyle: L.CircleMarkerOptions = { color: "#ec4899", fillColor: "#ec4899", fillOpacity: 0.85, weight: 1, radius: 8 };
+  const missionNodeStyle: L.CircleMarkerOptions = { color: "#00d4aa", fillColor: "#00d4aa", fillOpacity: 0.9, weight: 1, radius: 5 };
+  const missionEdgeStyle: L.PathOptions = { color: "#22c55e", weight: 2.5 };
 
   return (
     <MapContainer
       center={[52.4277, 5.6909]}
       zoom={16}
-      style={{ height: "100vh" }}
+      style={{ height: "100%", flex: 1 }}
       zoomControl={false}
       scrollWheelZoom={true}
     >
@@ -176,12 +179,8 @@ export default function MapView(): JSX.Element {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      <ZoomControl position="topright" />
-      <ScaleControl position="bottomleft" />
-
       <LayersControl position="topright">
-
-        <Overlay checked name="Poles">
+          <Overlay checked name="Poles">
           {data && (
             <GeoJSON
               data={filterByLayer(data, "poles")!}
@@ -254,7 +253,20 @@ export default function MapView(): JSX.Element {
           )}
         </Overlay>
 
+      
+
       </LayersControl>
+
+      <div style={{
+        position: 'absolute',
+        bottom: '24px',
+        right: '24px',
+        zIndex: 999,
+      }}>
+        <ZoomControl position="topright"  />
+      </div>
+
+      <ScaleControl position="bottomleft" />
 
       <FitBoundsToData data={data} mission={mission} />
     </MapContainer>

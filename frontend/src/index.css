@@ -1,13 +1,285 @@
-body {
+:root {
+  --bg-primary: #0a0f14;
+  --bg-secondary: #111920;
+  --bg-tertiary: #1a222c;
+  --bg-card: #151d25;
+  
+  --text-primary: #e8eef4;
+  --text-secondary: #8b9aab;
+  --text-muted: #5a6a7a;
+  
+  --accent-primary: #00d4aa;
+  --accent-secondary: #0891b2;
+  --accent-glow: rgba(0, 212, 170, 0.15);
+  
+  --border-subtle: #1e2a36;
+  --border-active: #2a3a4a;
+  
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 30px var(--accent-glow);
+  
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  
+  --font-display: 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  
+  --transition-fast: 150ms ease;
+  --transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-active);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+::selection {
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+}
+
+.leaflet-container {
+  background: var(--bg-primary) !important;
+  font-family: var(--font-display) !important;
+}
+
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: var(--shadow-card) !important;
+}
+
+.leaflet-control-zoom a {
+  background: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-subtle) !important;
+  transition: var(--transition-fast) !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: var(--bg-tertiary) !important;
+  color: var(--accent-primary) !important;
+}
+
+.leaflet-control-zoom-in {
+  border-radius: var(--radius-md) var(--radius-md) 0 0 !important;
+}
+
+.leaflet-control-zoom-out {
+  border-radius: 0 0 var(--radius-md) var(--radius-md) !important;
+}
+
+.leaflet-control-scale-line {
+  background: var(--bg-card) !important;
+  border-color: var(--border-subtle) !important;
+  color: var(--text-secondary) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 10px !important;
+}
+
+.leaflet-right .leaflet-control {
+  margin-right: 24px !important;
+}
+
+.leaflet-top .leaflet-right {
+  top: 10px !important;
+}
+
+.leaflet-bottom .leaflet-control {
+  margin-right: 24px !important;
+  margin-bottom: 24px !important;
+}
+
+.leaflet-bottom .leaflet-left {
+  margin-left: 24px !important;
+  margin-bottom: 24px !important;
+}
+
+.leaflet-control-layers {
+  margin-bottom: 24px !important;
+  margin-right: 24px !important;
+}
+
+.leaflet-control-layers {
+  background: rgba(21, 29, 37, 0.95) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(30, 42, 54, 0.8) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5) !important;
+  overflow: hidden;
+}
+
+.leaflet-control-layers-toggle {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23e8eef4' stroke-width='2'%3E%3Cline x1='3' y1='6' x2='21' y2='6'/%3E%3Cline x1='3' y1='12' x2='21' y2='12'/%3E%3Cline x1='3' y1='18' x2='21' y2='18'/%3E%3C/svg%3E") !important;
+}
+
+.leaflet-control-layers-expanded {
+  padding: 12px 16px !important;
+}
+
+.leaflet-control-layers-base {
+  padding-bottom: 8px !important;
+  border-bottom: 1px solid rgba(30, 42, 54, 0.6) !important;
+  margin-bottom: 8px !important;
+}
+
+.leaflet-control-layers-list {
+  padding: 4px 0 !important;
+}
+
+.leaflet-control-layers-list label {
+  padding: 8px 12px !important;
+  margin: 2px 0 !important;
+  border-radius: 6px !important;
+  transition: all 0.15s ease !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: #e8eef4 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.leaflet-control-layers-list label:hover {
+  background: rgba(0, 212, 170, 0.1) !important;
+}
+
+.leaflet-control-layers input[type="checkbox"] {
+  appearance: none !important;
+  width: 16px !important;
+  height: 16px !important;
+  border: 2px solid #5a6a7a !important;
+  border-radius: 4px !important;
+  background: transparent !important;
+  cursor: pointer !important;
+  position: relative !important;
+  accent-color: #00d4aa;
+}
+
+.leaflet-control-layers input[type="checkbox"]:checked {
+  background: #00d4aa !important;
+  border-color: #00d4aa !important;
+}
+
+.leaflet-control-layers input[type="checkbox"]:checked::after {
+  content: '✓' !important;
+  position: absolute !important;
+  top: -2px !important;
+  left: 2px !important;
+  font-size: 11px !important;
+  color: #0a0f14 !important;
+  font-weight: bold !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: rgba(21, 29, 37, 0.95) !important;
+  backdrop-filter: blur(12px);
+  color: var(--text-primary) !important;
+  border: 1px solid rgba(30, 42, 54, 0.8) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5) !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.leaflet-popup-tip {
+  background: rgba(21, 29, 37, 0.95) !important;
+  border: 1px solid rgba(30, 42, 54, 0.8) !important;
+  box-shadow: none !important;
+}
+
+.leaflet-popup-content {
+  margin: 14px 18px !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 12px !important;
+  line-height: 1.7 !important;
+}
+
+.leaflet-popup-content strong {
+  color: #00d4aa !important;
+  font-weight: 500 !important;
+  display: inline-block !important;
+  min-width: 60px !important;
+}
+
+.leaflet-popup-close-button {
+  display: none !important;
+}
+
+.leaflet-control-attribution {
+  background: var(--bg-card) !important;
+  color: var(--text-muted) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 9px !important;
+  padding: 2px 8px !important;
+}
+
+.leaflet-control-attribution a {
+  color: var(--text-secondary) !important;
+}
+
+.leaflet-control-attribution a:hover {
+  color: var(--accent-primary) !important;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
