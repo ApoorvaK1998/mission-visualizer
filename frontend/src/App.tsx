@@ -1,7 +1,7 @@
 import MapView from "./components/MapView";
 import Legend from "./components/Legend";
 
-function App() {
+function App(): JSX.Element {
   return (
     <>
       <MapView />

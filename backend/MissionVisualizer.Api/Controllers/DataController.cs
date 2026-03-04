@@ -9,14 +9,16 @@ public class DataController : ControllerBase
     [HttpGet("mission")]
     public IActionResult GetMission()
     {
-        var path = Path.Combine("wwwroot/data", "mission.geojson");
+        var basePath = AppDomain.CurrentDomain.BaseDirectory;
+        var path = Path.Combine(basePath, "wwwroot/data", "mission.geojson");
         return PhysicalFile(path, "application/json");
     }
 
     [HttpGet("park/{layer}")]
     public IActionResult GetParkLayer(string layer)
     {
-        var path = Path.Combine("wwwroot/data", $"{layer}.geojson");
+        var basePath = AppDomain.CurrentDomain.BaseDirectory;
+        var path = Path.Combine(basePath, "wwwroot/data", $"{layer}.geojson");
 
         if (!System.IO.File.Exists(path))
             return NotFound();
