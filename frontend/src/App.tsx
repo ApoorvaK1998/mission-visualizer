@@ -20,7 +20,7 @@ function App(): JSX.Element {
       background: "#0a0f14",
     }}>
       {/* Header */}
-      <div
+      <header
         style={{
           flexShrink: 0,
           padding: "14px 24px",
@@ -112,7 +112,7 @@ function App(): JSX.Element {
           </span>
           <span>v1.0.0</span>
         </div>
-      </div>
+      </header>
 
       <MapView />
       <Legend />
