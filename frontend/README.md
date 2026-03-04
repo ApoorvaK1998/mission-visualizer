@@ -1,105 +1,130 @@
-# Mission Visualizer - Frontend
+# Mission Visualizer
 
-A React TypeScript application for visualizing park mission data on an interactive map.
+An interactive web application that visualizes a robot mission on a map, built as part of a technical assignment.
+
+## Overview
+
+This application displays park infrastructure and mission data on an interactive Leaflet map. It loads geospatial data from two sources:
+- **biddinghuizen.gpkg** - Park boundaries, poles, fences, obstacles, panels, and dock locations
+- **biddinghuizen_mission_utm.geojson** - Mission graph (nodes and edges), mowing tasks, and dock locations
 
 ## Features
 
-- **Interactive Map**: Built with Leaflet/React-Leaflet for seamless map exploration
-- **Multiple Data Layers**: Toggle visibility for different map elements:
-  - Poles
-  - Fences
-  - Obstacles
-  - Panels
-  - Stations
-  - Compact Stations
-  - Mission Nodes
-  - Mission Edges
-- **Hover Information**: Hover over any map feature to see detailed properties (ID, type, etc.)
-- **Auto-fit Bounds**: Map automatically zooms to fit all visible data
-- **Legend**: Visual reference for all layer types
+- **Interactive Map**: Full-screen Leaflet map with pan/zoom
+- **Layer Toggle**: Show/hide different data layers via control panel
+- **Hover Information**: View element properties (ID, type) by hovering
+- **Auto-fit**: Map automatically zooms to fit all data on load
+- **Dark Theme**: Modern dark UI with custom styling
 
-## Prerequisites
+## Layers Visualized
 
-- Node.js (v18 or higher)
-- npm or yarn
-- Backend API running at http://localhost:5000
+| Layer | Description | Source |
+|-------|-------------|--------|
+| Poles | Park boundary poles | biddinghuizen.gpkg |
+| Fences | Park boundaries | biddinghuizen.gpkg |
+| Obstacles | Obstacle areas | biddinghuizen.gpkg |
+| Panels | Solar panels | biddinghuizen.gpkg |
+| Stations | Dock locations | biddinghuizen.gpkg |
+| Compact Stations | Compact docking stations | biddinghuizen.gpkg |
+| Nodes | Mission graph nodes | mission.geojson |
+| Edges | Mission graph edges | mission.geojson |
 
-## Installation
+## Running the Application
 
-1. Navigate to the frontend directory:
-   ```bash
-   cd frontend
-   ```
+### Prerequisites
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+- Node.js (v18+)
+- .NET 8 SDK
+- Python 3 (for GeoProcessing)
 
-3. Start the development server:
-   ```bash
-   npm start
-   ```
-
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
-
-## Building for Production
+### Backend Setup
 
 ```bash
-npm run build
+cd backend/MissionVisualizer.Api
+dotnet build
+dotnet run --urls="http://localhost:5000"
 ```
 
-This creates an optimized production build in the `build` folder.
+The API will be available at http://localhost:5000
+
+### Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+The frontend will be available at http://localhost:3000
+
+### Environment Variables (Optional)
+
+For the frontend, you can configure the API URL:
+
+```bash
+# .env file in frontend/
+REACT_APP_API_URL=http://localhost:5000/api/data
+```
+
+## Key Design Choices
+
+### 1. Coordinate System Handling
+- Park data (biddinghuizen.gpkg) is in EPSG:28992 (Amersfoort / RD New)
+- Mission data is in EPSG:32631 (UTM zone 31N)
+- Both are converted to EPSG:4326 (WGS84) for display on the map
+
+### 2. Technology Stack
+- **Frontend**: React 18 + TypeScript
+- **Backend**: ASP.NET Core 8
+- **Map**: Leaflet + React-Leaflet
+- **Styling**: Custom dark theme with CSS variables
+
+### 3. Architecture
+- REST API for data delivery
+- Frontend fetches GeoJSON from backend
+- Client-side rendering of map layers
 
 ## Project Structure
 
 ```
-frontend/
-├── public/
-│   └── index.html
-├── src/
-│   ├── components/
-│   │   ├── MapView.tsx    # Main map component with all layers
-│   │   └── Legend.tsx     # Legend component
-│   ├── services/
-│   │   └── dataService.ts # API calls to backend
-│   ├── types/
-│   │   └── geojson.ts     # TypeScript interfaces
-│   ├── App.tsx            # Main application component
-│   ├── index.tsx          # Application entry point
-│   └── reportWebVitals.ts # Performance metrics
-├── package.json
-├── tsconfig.json
-└── README.md
+├── backend/
+│   └── MissionVisualizer.Api/
+│       ├── Controllers/DataController.cs  # API endpoints
+│       └── wwwroot/data/                  # GeoJSON data files
+├── frontend/
+│   └── src/
+│       ├── components/
+│       │   ├── MapView.tsx   # Main map component
+│       │   └── Legend.tsx    # Legend overlay
+│       ├── services/
+│       │   └── dataService.ts # API calls
+│       └── types/
+│           └── geojson.ts     # TypeScript types
+└── Geo-processing/
+    ├── biddinghuizen.gpkg     # Original park data
+    └── convert_data.py        # Data conversion script
 ```
 
-## API Endpoints
+## Known Limitations
 
-The frontend expects these backend endpoints:
+1. **No Authentication**: The application has no user auth
+2. **No Persistent Settings**: Layer preferences are not saved
+3. **Static Data**: No way to update data without redeployment
+4. **Basic Error Handling**: Limited user feedback on errors
 
-- `GET http://localhost:5000/api/data/mission` - Mission data (nodes and edges)
-- `GET http://localhost:5000/api/data/park/data` - Park infrastructure data
+## Future Improvements
 
-## Usage
+With more time, I would add:
 
-1. **Toggle Layers**: Use the layer control in the top-right corner to show/hide specific data layers
-2. **View Details**: Hover over any feature on the map to see its properties (ID, type, etc.)
-3. **Navigate**: Use mouse wheel to zoom, click and drag to pan
-4. **Reset View**: Refresh the page to auto-fit all data
+1. **Loading States**: Show spinners while data loads
+2. **Error Boundaries**: Better error handling with user feedback
+3. **Layer Reordering**: Allow dragging to change layer z-order
+4. **Data Refresh**: Button to reload data without page refresh
+5. **Mobile Responsive**: Better touch support for mobile devices
+6. **Search/Filter**: Search for specific nodes or elements
+7. **Measurements**: Distance/area measurement tools
+8. **Export**: Export current view as image/PDF
 
-## Tech Stack
+## License
 
-- React 18
-- TypeScript
-- Leaflet / React-Leaflet
-- Create React App
-
-## Troubleshooting
-
-### Map not loading data
-- Ensure the backend API is running at http://localhost:5000
-- Check browser console for CORS errors
-
-### Build errors
-- Run `npm install` to ensure all dependencies are installed
-- Check that TypeScript is properly configured in tsconfig.json
+This is a demo application for assignment purposes.

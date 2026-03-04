@@ -82,11 +82,11 @@ function FitBoundsToData({ data, mission }: FitBoundsToDataProps): null {
     const bounds = getBoundsFromFeatures(allFeatures);
     
     if (bounds && bounds.isValid()) {
-      map.fitBounds(bounds, { padding: [100, 100] });
+      map.fitBounds(bounds, { padding: [20, 20] });
       setTimeout(() => {
         const currentZoom = map.getZoom();
-        if (currentZoom > 16) {
-          map.setZoom(16);
+        if (currentZoom > 17) {
+          map.setZoom(17);
         }
       }, 100);
     }
@@ -100,6 +100,7 @@ const FENCE_STYLE: L.PathOptions = { color: "#64748b", weight: 2.5, dashArray: "
 const OBSTACLE_STYLE: L.PathOptions = { color: "#ef4444", fillColor: "#ef4444", fillOpacity: 0.4, weight: 1.5 };
 const PANEL_STYLE: L.PathOptions = { color: "#eab308", fillColor: "#eab308", fillOpacity: 0.45, weight: 1.5 };
 const STATION_STYLE: L.CircleMarkerOptions = { color: "#ec4899", fillColor: "#ec4899", fillOpacity: 0.85, weight: 1, radius: 8 };
+const COMPACT_STATION_STYLE: L.CircleMarkerOptions = { color: "#f97316", fillColor: "#f97316", fillOpacity: 0.85, weight: 1, radius: 6 };
 const NODE_STYLE: L.CircleMarkerOptions = { color: "#00d4aa", fillColor: "#00d4aa", fillOpacity: 0.9, weight: 1, radius: 5 };
 const EDGE_STYLE: L.PathOptions = { color: "#22c55e", weight: 2.5 };
 
@@ -153,9 +154,9 @@ export default function MapView(): JSX.Element {
 
   return (
     <MapContainer
-      center={[52.4277, 5.6909]}
-      zoom={16}
-      style={{ height: "100%", flex: 1 }}
+      center={[52.4245, 5.6913]}
+      zoom={17}
+      style={{ height: "calc(100vh - 60px)", flex: 1 }}
       zoomControl={false}
       scrollWheelZoom={true}
     >
@@ -206,12 +207,23 @@ export default function MapView(): JSX.Element {
           )}
         </Overlay>
 
-        <Overlay checked name="Station">
+        <Overlay checked name="Stations">
           {data && (
             <GeoJSON
-              data={filterByLayer(data, "station")!}
+              data={filterByLayer(data, "stations")!}
               style={STATION_STYLE}
               pointToLayer={(_f, latlng) => L.circleMarker(latlng, STATION_STYLE)}
+              onEachFeature={onEachFeature}
+            />
+          )}
+        </Overlay>
+
+        <Overlay checked name="Compact Stations">
+          {data && (
+            <GeoJSON
+              data={filterByLayer(data, "compactstations")!}
+              style={COMPACT_STATION_STYLE}
+              pointToLayer={(_f, latlng) => L.circleMarker(latlng, COMPACT_STATION_STYLE)}
               onEachFeature={onEachFeature}
             />
           )}

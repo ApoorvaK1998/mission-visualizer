@@ -17,7 +17,8 @@ const legendItems: LegendItem[] = [
   { label: "Fences", color: "#64748b", symbol: "line" },
   { label: "Obstacles", color: "#ef4444", symbol: "square" },
   { label: "Panels", color: "#eab308", symbol: "square" },
-  { label: "Station", color: "#ec4899", symbol: "diamond" },
+  { label: "Stations", color: "#ec4899", symbol: "diamond" },
+  { label: "Compact Stations", color: "#f97316", symbol: "diamond" },
 ];
 
 function Symbol({ type, color }: { type: LegendItem["symbol"]; color: string }) {
