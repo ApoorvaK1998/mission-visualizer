@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import MapView from "./components/MapView";
 import Legend from "./components/Legend";
 
+const ANIMATION_DELAY_MS = 50;
+
 function App(): JSX.Element {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoaded(true), 50);
+    const timer = setTimeout(() => setIsLoaded(true), ANIMATION_DELAY_MS);
     return () => clearTimeout(timer);
   }, []);
 
