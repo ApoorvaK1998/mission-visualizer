@@ -75,12 +75,14 @@ This application displays park infrastructure and mission data on an interactive
 
 ## Running the Application
 
-### Option 1: Using Scripts
+### Option 1: Quick Start Script
 
 ```bash
 # From project root
-./start.sh  # Starts both backend and frontend
+./start.sh
 ```
+
+This will start both backend and frontend automatically.
 
 ### Option 2: Manual Setup
 
