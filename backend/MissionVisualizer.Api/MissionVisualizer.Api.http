@@ -1,0 +1,6 @@
+@MissionVisualizer.Api_HostAddress = http://localhost:5038
+
+GET {{MissionVisualizer.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
