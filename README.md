@@ -116,15 +116,6 @@ npm start
 
 The frontend will be available at **http://localhost:3000**
 
-### Environment Variables (Optional)
-
-For the frontend, you can configure the API URL:
-
-```bash
-# Create .env file in frontend/
-REACT_APP_API_URL=http://localhost:5000/api/data
-```
-
 ## API Endpoints
 
 | Endpoint | Description |
@@ -174,31 +165,6 @@ The backend serves the data as-is, and the conversion happens during the initial
 - Custom styled Leaflet controls
 - Glass-morphism effects on overlays
 
-## Building for Production
-
-### Frontend
-
-```bash
-cd frontend
-npm run build
-```
-
-This creates an optimized production build in the `build/` folder.
-
-### Backend
-
-```bash
-cd backend/MissionVisualizer.Api
-dotnet publish -c Release -o publish
-```
-
-## Known Limitations
-
-1. **No Authentication**: The application has no user authentication
-2. **No Persistent Settings**: Layer preferences are not saved between sessions
-3. **Static Data**: Data must be updated manually
-4. **Limited Error Handling**: Basic error messages only
-
 ## Future Improvements
 
 With more time, these features would enhance the application:
@@ -211,42 +177,3 @@ With more time, these features would enhance the application:
 6. **Search**: Find specific nodes/elements
 7. **Measurements**: Distance/area calculation tools
 8. **Export**: Save map as image/PDF
-
-## Troubleshooting
-
-### Backend Issues
-
-```bash
-# Check if port 5000 is in use
-lsof -i :5000
-
-# Kill existing process
-fuser -k 5000/tcp
-```
-
-### Frontend Issues
-
-```bash
-# Clear node_modules and reinstall
-rm -rf frontend/node_modules
-cd frontend
-npm install
-
-# Check for TypeScript errors
-cd frontend
-npx tsc --noEmit
-```
-
-### Map Not Loading Data
-
-1. Ensure backend is running at http://localhost:5000
-2. Check browser console for CORS errors
-3. Verify API endpoints return data:
-   ```bash
-   curl http://localhost:5000/api/data/park/data
-   curl http://localhost:5000/api/data/mission
-   ```
-
-## License
-
-This is a demonstration application created for a technical assignment.
