@@ -1,37 +1,56 @@
 #!/bin/bash
 
-# Start Mission Visualizer Application
-# Usage: ./start.sh
-
+echo "========================================"
 echo "Starting Mission Visualizer..."
+echo "========================================"
 
-# Kill existing processes on ports 3000 and 5000
-echo "Checking for existing processes..."
+# Kill existing processes
+
+echo "Cleaning ports 3000 and 5000..."
 fuser -k 5000/tcp 2>/dev/null
 fuser -k 3000/tcp 2>/dev/null
 sleep 2
 
-# Start backend
+#######################################
+
+# Start Backend
+
+#######################################
 echo "Starting backend on port 5000..."
-cd backend/MissionVisualizer.Api
+
+cd backend/MissionVisualizer.Api || exit
+
 dotnet run --urls="http://localhost:5000" &
 BACKEND_PID=$!
 
-# Wait for backend to start
+echo "Backend PID: $BACKEND_PID"
+
+cd ../../
+
+
+echo "Waiting for backend to start..."
 sleep 5
 
-# Check if backend is running
 if curl -s http://localhost:5000/api/data/park/data > /dev/null 2>&1; then
-    echo "Backend started successfully (PID: $BACKEND_PID)"
+echo "Backend started successfully"
 else
-    echo "Warning: Backend may not have started properly"
+echo "Warning: Backend may not have started properly"
 fi
 
-# Start frontend
+#######################################
+
+# Start Frontend
+
+#######################################
 echo "Starting frontend on port 3000..."
-cd ../frontend
+
+cd frontend || exit
+
 npm start &
 FRONTEND_PID=$!
+
+echo "Frontend PID: $FRONTEND_PID"
+
 
 echo ""
 echo "========================================"
@@ -41,7 +60,14 @@ echo "Frontend: http://localhost:3000"
 echo "Backend:  http://localhost:5000"
 echo "========================================"
 echo ""
-echo "To stop:"
-echo "  kill $BACKEND_PID $FRONTEND_PID"
+echo "Press CTRL+C to stop everything"
 echo ""
-echo "Or use: fuser -k 3000/tcp 5000/tcp"
+
+#######################################
+
+# Stop both on CTRL+C
+
+#######################################
+trap "echo 'Stopping services...'; kill $BACKEND_PID $FRONTEND_PID; exit" INT
+
+wait

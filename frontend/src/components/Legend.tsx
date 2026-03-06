@@ -8,17 +8,18 @@ interface LegendItem {
   label: string;
   color: string;
   symbol: "circle" | "line" | "square" | "diamond";
+  info: string;
 }
 
 const legendItems: LegendItem[] = [
-  { label: "Nodes", color: "#00d4aa", symbol: "circle" },
-  { label: "Edges", color: "#22c55e", symbol: "line" },
-  { label: "Poles", color: "#8b5cf6", symbol: "circle" },
-  { label: "Fences", color: "#64748b", symbol: "line" },
-  { label: "Obstacles", color: "#ef4444", symbol: "square" },
-  { label: "Panels", color: "#eab308", symbol: "square" },
-  { label: "Stations", color: "#ec4899", symbol: "diamond" },
-  { label: "Compact Stations", color: "#f97316", symbol: "diamond" },
+  { label: "Nodes", color: "#00d4aa", symbol: "circle", info: "Mission waypoints" },
+  { label: "Edges", color: "#22c55e", symbol: "line", info: "Connection paths" },
+  { label: "Poles", color: "#8b5cf6", symbol: "circle", info: "Structural poles" },
+  { label: "Fences", color: "#64748b", symbol: "line", info: "Perimeter fences" },
+  { label: "Obstacles", color: "#ef4444", symbol: "square", info: "Obstacle markers" },
+  { label: "Panels", color: "#eab308", symbol: "square", info: "Solar panels" },
+  { label: "Stations", color: "#ec4899", symbol: "diamond", info: "Charging stations" },
+  { label: "Compact Stations", color: "#f97316", symbol: "diamond", info: "Compact chargers" },
 ];
 
 function Symbol({ type, color }: { type: LegendItem["symbol"]; color: string }) {
@@ -68,6 +69,7 @@ function Symbol({ type, color }: { type: LegendItem["symbol"]; color: string }) 
 
 export default function Legend({ className }: LegendProps): JSX.Element {
   const [isVisible, setIsVisible] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
@@ -86,6 +88,8 @@ export default function Legend({ className }: LegendProps): JSX.Element {
         transform: isVisible ? "translateY(0)" : "translateY(12px)",
         transition: "opacity 0.4s ease, transform 0.4s ease",
       }}
+      onMouseEnter={() => setIsVisible(true)}
+      onMouseLeave={() => setIsVisible(false)}
     >
       <div
         style={{
@@ -129,6 +133,8 @@ export default function Legend({ className }: LegendProps): JSX.Element {
           {legendItems.map((item, index) => (
             <div
               key={item.label}
+              onMouseEnter={() => setHoveredItem(item.info)}
+              onMouseLeave={() => setHoveredItem(null)}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -136,6 +142,7 @@ export default function Legend({ className }: LegendProps): JSX.Element {
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? "translateX(0)" : "translateX(-8px)",
                 transition: `opacity 0.3s ease ${index * 0.05}s, transform 0.3s ease ${index * 0.05}s`,
+                cursor: "pointer",
               }}
             >
               <Symbol type={item.symbol} color={item.color} />
@@ -153,20 +160,39 @@ export default function Legend({ className }: LegendProps): JSX.Element {
           ))}
         </div>
 
-        <div
-          style={{
-            marginTop: "14px",
-            paddingTop: "10px",
-            borderTop: "1px solid rgba(30, 42, 54, 0.6)",
-            fontSize: "9px",
-            color: "#5a6a7a",
-            fontFamily: "'JetBrains Mono', monospace",
-            textAlign: "center",
-            letterSpacing: "0.05em",
-          }}
-        >
-          HOVER FOR DETAILS
-        </div>
+        {hoveredItem && (
+          <div
+            style={{
+              marginTop: "14px",
+              paddingTop: "10px",
+              borderTop: "1px solid rgba(30, 42, 54, 0.6)",
+              fontSize: "11px",
+              color: "#00d4aa",
+              fontFamily: "'JetBrains Mono', monospace",
+              textAlign: "center",
+              letterSpacing: "0.02em",
+            }}
+          >
+            {hoveredItem}
+          </div>
+        )}
+
+        {!hoveredItem && (
+          <div
+            style={{
+              marginTop: "14px",
+              paddingTop: "10px",
+              borderTop: "1px solid rgba(30, 42, 54, 0.6)",
+              fontSize: "9px",
+              color: "#5a6a7a",
+              fontFamily: "'JetBrains Mono', monospace",
+              textAlign: "center",
+              letterSpacing: "0.05em",
+            }}
+          >
+            HOVER FOR DETAILS
+          </div>
+        )}
       </div>
     </div>
   );

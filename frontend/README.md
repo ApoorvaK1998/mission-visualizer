@@ -66,24 +66,6 @@ For the frontend, you can configure the API URL:
 REACT_APP_API_URL=http://localhost:5000/api/data
 ```
 
-## Key Design Choices
-
-### 1. Coordinate System Handling
-- Park data (biddinghuizen.gpkg) is in EPSG:28992 (Amersfoort / RD New)
-- Mission data is in EPSG:32631 (UTM zone 31N)
-- Both are converted to EPSG:4326 (WGS84) for display on the map
-
-### 2. Technology Stack
-- **Frontend**: React 18 + TypeScript
-- **Backend**: ASP.NET Core 8
-- **Map**: Leaflet + React-Leaflet
-- **Styling**: Custom dark theme with CSS variables
-
-### 3. Architecture
-- REST API for data delivery
-- Frontend fetches GeoJSON from backend
-- Client-side rendering of map layers
-
 ## Project Structure
 
 ```
@@ -105,13 +87,6 @@ REACT_APP_API_URL=http://localhost:5000/api/data
     └── convert_data.py        # Data conversion script
 ```
 
-## Known Limitations
-
-1. **No Authentication**: The application has no user auth
-2. **No Persistent Settings**: Layer preferences are not saved
-3. **Static Data**: No way to update data without redeployment
-4. **Basic Error Handling**: Limited user feedback on errors
-
 ## Future Improvements
 
 With more time, I would add:
@@ -125,6 +100,3 @@ With more time, I would add:
 7. **Measurements**: Distance/area measurement tools
 8. **Export**: Export current view as image/PDF
 
-## License
-
-This is a demo application for assignment purposes.
